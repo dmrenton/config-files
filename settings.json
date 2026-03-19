@@ -1,0 +1,22 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.js",
+    "padding": 0
+  },
+"hooks": {
+    "Notification": [
+      {
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/tmux-notify.sh" }]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "apple-notes@apple-notes-mcp": true
+  },
+  "teammateMode": "tmux",
+  "effortLevel": "high"
+}
