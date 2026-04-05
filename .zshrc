@@ -29,3 +29,4 @@ precmd() {
         echo -ne "\e]1;${PWD##*/}\a"
     fi
 }
+export PATH="$HOME/.local/bin:$PATH"
