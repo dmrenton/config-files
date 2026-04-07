@@ -19,15 +19,18 @@ process.stdin.on('end', () => {
 
     let branch = '';
     let repoLink = '';
-    const added = data.cost?.total_lines_added || 0;
-    const removed = data.cost?.total_lines_removed || 0;
     let linesChanged = '';
-    if (added || removed) {
-        const parts = [];
-        if (added) parts.push(`${GREEN}+${added}${RESET}`);
-        if (removed) parts.push(`${RED}-${removed}${RESET}`);
-        linesChanged = ` | ${parts.join(' ')}`;
-    }
+    try {
+        const shortstat = execSync('git diff --shortstat HEAD', { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'], cwd: data.workspace.current_dir }).trim();
+        if (shortstat) {
+            const ins = (shortstat.match(/(\d+) insertion/) || [])[1];
+            const del = (shortstat.match(/(\d+) deletion/) || [])[1];
+            const parts = [];
+            if (ins) parts.push(`${GREEN}+${ins}${RESET}`);
+            if (del) parts.push(`${RED}-${del}${RESET}`);
+            if (parts.length) linesChanged = ` | ${parts.join(' ')}`;
+        }
+    } catch {}
     try {
         branch = execSync('git branch --show-current', { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
         branch = branch ? ` | 🌿 ${branch}` : '';
